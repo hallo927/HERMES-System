@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HERMES — Filipino Health Information System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#eef1f8;
+  --blue:#2563eb;
+  --blue-2:#3b82f6;
+  --blue-soft:rgba(37,99,235,0.08);
+  --green:#059669;
+  --green-soft:rgba(5,150,105,0.1);
+  --amber:#d97706;
+  --amber-soft:rgba(217,119,6,0.1);
+  --orange:#ea580c;
+  --orange-soft:rgba(234,88,12,0.1);
+  --red:#dc2626;
+  --white:#ffffff;
+  --g100:#f1f5f9;
+  --g200:#e2e8f0;
+  --g300:#cbd5e1;
+  --g400:#94a3b8;
+  --g500:#64748b;
+  --g600:#475569;
+  --g700:#334155;
+  --g900:#0f172a;
+  --glass:rgba(255,255,255,0.65);
+  --glass-hover:rgba(255,255,255,0.82);
+  --glass-border:rgba(255,255,255,0.9);
+  --shadow-sm:0 2px 8px rgba(0,0,0,0.06);
+  --shadow:0 8px 32px rgba(0,0,0,0.08);
+  --shadow-lg:0 16px 48px rgba(0,0,0,0.10);
+  --r:20px;
+  --rs:14px;
+  --rss:10px;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  background:var(--bg);
+  background-image:
+    radial-gradient(ellipse at 15% 15%,rgba(147,197,253,0.35) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 80%,rgba(167,243,208,0.3) 0%,transparent 55%),
+    radial-gradient(ellipse at 70% 20%,rgba(196,181,253,0.2) 0%,transparent 45%);
+  background-attachment:fixed;
+  color:var(--g900);
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;height:58px;
+  background:rgba(238,241,248,0.75);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.8);
+}
+.nav-left{display:flex;align-items:center;gap:10px;}
+.nav-icon{
+  width:34px;height:34px;background:var(--blue);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  color:white;font-size:0.95rem;box-shadow:0 4px 12px rgba(37,99,235,0.3);
+}
+.nav-brand{font-size:0.95rem;font-weight:700;color:var(--g900);letter-spacing:-0.02em;}
+.nav-sub{font-size:0.6rem;color:var(--g400);margin-top:1px;letter-spacing:0.01em;}
+.nav-right{display:flex;align-items:center;gap:0.75rem;}
+.nav-tag{
+  background:var(--glass);backdrop-filter:blur(12px);
+  border:1px solid var(--glass-border);border-radius:20px;padding:0.28rem 0.85rem;
+  font-size:0.68rem;font-weight:600;color:var(--g500);letter-spacing:0.04em;
+  text-transform:uppercase;box-shadow:var(--shadow-sm);
+}
+.nav-dot{
+  width:8px;height:8px;border-radius:50%;background:#22c55e;
+  box-shadow:0 0 8px rgba(34,197,94,0.6);animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.7;transform:scale(0.9);}}
+
+main{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:80px 1.5rem 4rem;
+}
+
+.hero{text-align:center;margin-bottom:2rem;max-width:540px;}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:var(--glass);backdrop-filter:blur(12px);
+  border:1px solid var(--glass-border);border-radius:20px;padding:0.35rem 1rem;
+  font-size:0.72rem;font-weight:600;color:var(--blue);margin-bottom:1.25rem;
+  box-shadow:var(--shadow-sm);
+}
+.hero h1{
+  font-size:2.6rem;font-weight:800;letter-spacing:-0.04em;line-height:1.1;
+  color:var(--g900);margin-bottom:0.85rem;
+}
+.hero h1 span{
+  background:linear-gradient(135deg,var(--blue),#7c3aed);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero p{color:var(--g500);font-size:0.92rem;line-height:1.7;}
+
+.search-card{
+  width:100%;max-width:600px;background:var(--glass);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1.5px solid var(--glass-border);border-radius:24px;
+  padding:1.5rem;box-shadow:var(--shadow-lg);margin-bottom:1.25rem;
+}
+.search-inner{
+  display:flex;gap:0.5rem;background:white;
+  border:1.5px solid var(--g200);border-radius:var(--r);
+  padding:0.35rem;margin-bottom:1rem;box-shadow:var(--shadow-sm);
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.search-inner:focus-within{
+  border-color:var(--blue);box-shadow:0 0 0 4px rgba(37,99,235,0.08);
+}
+.search-field-wrap{flex:1;position:relative;}
+.autocomplete-dropdown{
+  position:absolute;top:calc(100% + 6px);left:0;right:0;
+  background:white;border:1.5px solid var(--g200);border-radius:var(--rs);
+  box-shadow:var(--shadow-lg);max-height:240px;overflow-y:auto;
+  z-index:50;display:none;
+}
+.autocomplete-dropdown.open{display:block;}
+.autocomplete-item{
+  padding:0.55rem 0.9rem;font-size:0.85rem;color:var(--g900);
+  cursor:pointer;transition:background 0.15s;
+}
+.autocomplete-item:hover,.autocomplete-item.active{background:var(--blue-soft);color:var(--blue);}
+.autocomplete-item b{color:var(--blue);}
+input[type=text]{
+  width:100%;background:transparent;border:none;
+  padding:0.65rem 0.85rem;font-family:'Inter',sans-serif;
+  font-size:0.93rem;color:var(--g900);outline:none;
+  box-sizing:border-box;
+}
+input[type=text]::placeholder{color:var(--g400);font-style:italic;}
+.btn-search{
+  background:var(--blue);color:white;border:none;border-radius:var(--rs);
+  padding:0.65rem 1.4rem;font-family:'Inter',sans-serif;
+  font-size:0.88rem;font-weight:700;cursor:pointer;
+  box-shadow:0 4px 12px rgba(37,99,235,0.3);transition:all 0.2s;
+  display:flex;align-items:center;gap:0.4rem;white-space:nowrap;
+}
+.btn-search:hover{background:var(--blue-2);transform:translateY(-1px);box-shadow:0 6px 16px rgba(37,99,235,0.35);}
+.btn-search:active{transform:translateY(0);}
+.btn-search:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.chips-row{display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap;}
+.chips-label{font-size:0.7rem;color:var(--g400);font-weight:500;}
+.chip{
+  background:white;border:1px solid var(--g200);border-radius:20px;
+  padding:0.25rem 0.8rem;font-size:0.75rem;font-weight:500;
+  color:var(--g600);cursor:pointer;transition:all 0.15s;box-shadow:var(--shadow-sm);
+}
+.chip:hover{background:var(--blue);color:white;border-color:var(--blue);transform:translateY(-1px);box-shadow:0 4px 10px rgba(37,99,235,0.25);}
+
+.loading{display:none;text-align:center;margin-bottom:1.25rem;}
+.loading-pill{
+  display:inline-flex;align-items:center;gap:0.75rem;
+  background:var(--glass);backdrop-filter:blur(16px);
+  border:1px solid var(--glass-border);border-radius:30px;
+  padding:0.85rem 1.75rem;color:var(--g500);font-size:0.85rem;box-shadow:var(--shadow-sm);
+}
+.spinner{
+  width:16px;height:16px;border:2px solid var(--g200);
+  border-top-color:var(--blue);border-radius:50%;
+  animation:spin 0.7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+#results{display:none;width:100%;max-width:600px;}
+
+/* PROCESS CARD */
+.process-card{
+  background:var(--glass);backdrop-filter:blur(24px);
+  border:1.5px solid var(--glass-border);border-radius:var(--r);
+  overflow:hidden;box-shadow:var(--shadow);margin-bottom:1rem;
+}
+.process-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 1.4rem 0.75rem;border-bottom:1px solid rgba(0,0,0,0.05);
+}
+.process-title{
+  font-size:0.7rem;font-weight:700;color:var(--g400);
+  text-transform:uppercase;letter-spacing:0.1em;
+}
+.process-badge{
+  background:rgba(37,99,235,0.08);color:var(--blue);
+  border-radius:20px;padding:0.2rem 0.7rem;
+  font-size:0.66rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;
+}
+.step{
+  padding:1rem 1.4rem;border-bottom:1px solid rgba(0,0,0,0.04);
+  display:flex;gap:1rem;align-items:flex-start;transition:background 0.15s;
+}
+.step:last-child{border-bottom:none;}
+.step:hover{background:rgba(255,255,255,0.5);}
+.step-left{display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;}
+.step-num{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.72rem;font-weight:800;
+}
+.n1{background:rgba(37,99,235,0.1);color:var(--blue);}
+.n2{background:rgba(217,119,6,0.1);color:var(--amber);}
+.n3{background:rgba(5,150,105,0.1);color:var(--green);}
+.step-body{flex:1;padding-top:4px;}
+.step-lbl{
+  font-size:0.65rem;font-weight:700;color:var(--g400);
+  text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;
+}
+.step-val{font-size:0.92rem;color:var(--g900);font-weight:500;}
+.step-mapped{font-size:0.92rem;color:var(--blue);font-weight:700;}
+.mbadge{
+  display:inline-flex;align-items:center;gap:4px;border-radius:6px;
+  padding:0.15rem 0.55rem;font-size:0.63rem;font-weight:700;
+  margin-left:0.5rem;vertical-align:middle;
+  text-transform:uppercase;letter-spacing:0.04em;
+}
+.mb-exact{background:rgba(5,150,105,0.1);color:var(--green);}
+.mb-exact::before{content:'✓ ';}
+.mb-partial{background:rgba(217,119,6,0.1);color:var(--amber);}
+.mb-partial::before{content:'~ ';}
+.mb-word{background:rgba(37,99,235,0.08);color:var(--blue);}
+.mb-word::before{content:'≈ ';}
+.mb-fuzzy{background:rgba(124,58,237,0.1);color:#7c3aed;}
+.mb-fuzzy::before{content:'⟿ ';}
+.mb-fuzzylow{background:rgba(220,38,38,0.08);color:#dc2626;}
+.mb-fuzzylow::before{content:'? ';}
+.mb-decomposed{background:rgba(13,148,136,0.1);color:#0d9488;}
+.mb-decomposed::before{content:'⊕ ';}
+
+/* RED FLAG ALERT */
+.red-flag-alert{
+  background:linear-gradient(135deg,rgba(220,38,38,0.12),rgba(239,68,68,0.06));
+  border:1.5px solid rgba(220,38,38,0.35);border-radius:var(--r);
+  padding:1.1rem 1.4rem;margin-bottom:1rem;
+  display:flex;align-items:flex-start;gap:0.85rem;
+  box-shadow:0 4px 16px rgba(220,38,38,0.12);
+  animation:alertPulse 2s ease-in-out infinite;
+}
+@keyframes alertPulse{0%,100%{box-shadow:0 4px 16px rgba(220,38,38,0.12);}50%{box-shadow:0 4px 24px rgba(220,38,38,0.28);}}
+.red-flag-icon{font-size:1.5rem;flex-shrink:0;margin-top:1px;}
+.red-flag-body{}
+.red-flag-title{font-size:0.9rem;font-weight:800;color:#b91c1c;margin-bottom:0.3rem;letter-spacing:-0.01em;}
+.red-flag-text{font-size:0.8rem;color:#991b1b;line-height:1.6;}
+.red-flag-symptoms{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.5rem;}
+.red-flag-chip{
+  background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.2);
+  border-radius:6px;padding:0.2rem 0.6rem;font-size:0.72rem;
+  font-weight:600;color:#b91c1c;
+}
+
+/* NEGATION NOTICE */
+.negation-notice{
+  background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);
+  border-radius:var(--rss);padding:0.6rem 1rem;margin-top:0.6rem;
+  font-size:0.75rem;color:#4338ca;display:flex;align-items:center;gap:0.5rem;
+}
+.negation-notice::before{content:'⊘';font-size:0.85rem;}
+
+/* MULTI-SYMPTOM BREAKDOWN */
+.multi-row{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.45rem;}
+.multi-chip{
+  background:white;border:1px solid var(--g200);border-radius:8px;
+  padding:0.25rem 0.75rem;font-size:0.78rem;font-weight:500;
+  color:var(--g700);box-shadow:var(--shadow-sm);
+  display:flex;align-items:center;gap:0.4rem;
+}
+.multi-chip .mc-arrow{color:var(--blue);font-weight:700;}
+.multi-chip .mc-eng{color:var(--blue);}
+.multi-chip .mc-badge{
+  font-size:0.6rem;font-weight:700;padding:0.1rem 0.4rem;
+  border-radius:4px;text-transform:uppercase;
+}
+.mc-exact{background:rgba(5,150,105,0.1);color:var(--green);}
+.mc-partial{background:rgba(217,119,6,0.1);color:var(--amber);}
+.mc-word{background:rgba(37,99,235,0.08);color:var(--blue);}
+.mc-fuzzy{background:rgba(124,58,237,0.1);color:#7c3aed;}
+.mc-fuzzylow{background:rgba(220,38,38,0.08);color:#dc2626;}
+.mc-decomposed{background:rgba(13,148,136,0.1);color:#0d9488;}
+
+/* EXPANDED TERM TAGS — now clickable */
+.tags{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.5rem;}
+.tag{
+  background:white;border:1px solid var(--g200);border-radius:8px;
+  padding:0.25rem 0.7rem;font-size:0.74rem;font-weight:500;
+  color:var(--g700);box-shadow:var(--shadow-sm);
+  transition:all 0.15s;cursor:default;
+}
+.tag.has-def{
+  cursor:pointer;border-color:#c7d2fe;color:var(--blue);background:#eef2ff;
+}
+.tag.has-def:hover{
+  background:var(--blue);color:white;border-color:var(--blue);
+  transform:translateY(-1px);box-shadow:0 4px 10px rgba(37,99,235,0.25);
+}
+.tag-hint{
+  font-size:0.63rem;color:var(--g400);margin-top:0.45rem;
+  display:flex;align-items:center;gap:0.35rem;
+}
+.tag-hint::before{content:'ⓘ';font-size:0.7rem;}
+
+/* SOURCE LABEL BADGES on expanded terms */
+.tag-source{
+  font-size:0.58rem;font-weight:700;padding:0.08rem 0.35rem;
+  border-radius:4px;text-transform:uppercase;letter-spacing:0.04em;
+  margin-left:3px;vertical-align:middle;
+}
+.src-dict{background:rgba(5,150,105,0.12);color:var(--green);}
+.src-med{background:rgba(37,99,235,0.1);color:var(--blue);}
+.src-wn{background:rgba(100,116,139,0.12);color:var(--g500);}
+
+/* DID YOU MEAN */
+.dym-box{
+  background:var(--glass);backdrop-filter:blur(24px);
+  border:1.5px solid var(--glass-border);border-radius:var(--r);
+  padding:1.5rem 1.4rem;box-shadow:var(--shadow);
+}
+.dym-title{font-size:0.85rem;font-weight:700;color:var(--g700);margin-bottom:0.75rem;}
+.dym-chips{display:flex;flex-wrap:wrap;gap:0.45rem;}
+.dym-chip{
+  background:white;border:1.5px solid var(--blue);border-radius:10px;
+  padding:0.4rem 1rem;font-size:0.82rem;font-weight:600;
+  color:var(--blue);cursor:pointer;transition:all 0.15s;box-shadow:var(--shadow-sm);
+}
+.dym-chip:hover{background:var(--blue);color:white;transform:translateY(-1px);}
+
+/* TERM DEFINITION POPUP */
+.popup-overlay{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(15,23,42,0.35);backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;padding:1.5rem;
+}
+.popup-overlay.open{display:flex;}
+.popup-box{
+  background:white;border-radius:20px;padding:1.75rem;
+  max-width:400px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,0.18);
+  animation:popIn 0.18s ease;position:relative;
+}
+@keyframes popIn{from{transform:scale(0.94);opacity:0;}to{transform:scale(1);opacity:1;}}
+.popup-close{
+  position:absolute;top:1rem;right:1rem;
+  background:var(--g100);border:none;border-radius:8px;
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:0.85rem;color:var(--g500);
+  transition:background 0.15s;
+}
+.popup-close:hover{background:var(--g200);}
+.popup-term{
+  font-size:1.05rem;font-weight:800;color:var(--g900);
+  letter-spacing:-0.02em;margin-bottom:0.25rem;
+}
+.popup-system{
+  display:inline-flex;align-items:center;gap:0.35rem;
+  background:var(--blue-soft);color:var(--blue);
+  border-radius:20px;padding:0.2rem 0.7rem;
+  font-size:0.67rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.05em;margin-bottom:1rem;
+}
+.popup-def{
+  font-size:0.88rem;color:var(--g600);line-height:1.7;
+  border-left:3px solid var(--g200);padding-left:0.85rem;
+}
+.popup-source{
+  margin-top:1rem;font-size:0.68rem;color:var(--g400);
+  display:flex;align-items:center;gap:0.35rem;
+}
+.popup-source span{
+  background:var(--g100);border-radius:6px;padding:0.15rem 0.5rem;
+  font-weight:600;
+}
+
+/* ============================================
+   CONFIDENCE TIER RESULT CARD
+   ============================================ */
+.result-card{
+  background:var(--glass);backdrop-filter:blur(24px);
+  border:1.5px solid var(--glass-border);border-radius:var(--r);
+  overflow:hidden;box-shadow:var(--shadow);
+}
+
+/* tier color overrides on result-top */
+.result-top{
+  padding:1.25rem 1.4rem;
+  border-bottom:1px solid rgba(0,0,0,0.07);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;
+}
+
+/* HIGH */
+.tier-high .result-top{background:linear-gradient(135deg,rgba(5,150,105,0.12),rgba(16,185,129,0.06));}
+.tier-high .result-disease-label{color:var(--green);}
+.tier-high .result-disease-label::before{background:var(--green);box-shadow:0 0 6px rgba(5,150,105,0.5);}
+.tier-high .score-num{color:var(--green);}
+.tier-high .tier-banner{display:none;}
+
+/* MEDIUM */
+.tier-medium .result-top{background:linear-gradient(135deg,rgba(217,119,6,0.1),rgba(245,158,11,0.05));}
+.tier-medium .result-disease-label{color:var(--amber);}
+.tier-medium .result-disease-label::before{background:var(--amber);box-shadow:0 0 6px rgba(217,119,6,0.5);}
+.tier-medium .score-num{color:var(--amber);}
+
+/* LOW */
+.tier-low .result-top{background:linear-gradient(135deg,rgba(234,88,12,0.1),rgba(249,115,22,0.05));}
+.tier-low .result-disease-label{color:var(--orange);}
+.tier-low .result-disease-label::before{background:var(--orange);box-shadow:0 0 6px rgba(234,88,12,0.5);}
+.tier-low .score-num{color:var(--orange);}
+
+.result-disease{font-size:1.2rem;font-weight:800;color:var(--g900);letter-spacing:-0.02em;}
+.result-disease-label{
+  font-size:0.65rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.07em;margin-bottom:0.3rem;
+  display:flex;align-items:center;gap:0.4rem;
+}
+.result-disease-label::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+}
+.score-pill{
+  background:white;border:1px solid var(--g200);border-radius:var(--rs);
+  padding:0.5rem 0.85rem;text-align:center;box-shadow:var(--shadow-sm);flex-shrink:0;
+}
+.score-num{font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;line-height:1;}
+.score-label{font-size:0.6rem;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+
+/* FOLLOW-UP (SYMPTOM DELTA) CARD */
+.followup-card{
+  background:var(--glass);backdrop-filter:blur(24px);
+  border:1.5px solid var(--glass-border);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:1.25rem 1.4rem;margin-top:1rem;
+}
+.followup-header{display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:1rem;}
+.followup-icon{font-size:1.4rem;flex-shrink:0;}
+.followup-title{font-size:0.92rem;font-weight:700;color:var(--g900);}
+.followup-sub{font-size:0.78rem;color:var(--g500);margin-top:2px;}
+.followup-rows{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1rem;}
+.followup-row{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  background:white;border:1px solid var(--g200);border-radius:var(--rs);
+  padding:0.6rem 0.9rem;
+}
+.followup-label{font-size:0.85rem;color:var(--g900);font-weight:500;}
+.followup-toggle{display:flex;gap:0.4rem;flex-shrink:0;}
+.ft-btn{
+  border:1.5px solid var(--g200);background:white;color:var(--g600);
+  border-radius:8px;padding:0.3rem 0.9rem;font-size:0.78rem;font-weight:700;
+  cursor:pointer;transition:all 0.15s;font-family:'Inter',sans-serif;
+}
+.ft-btn:hover{border-color:var(--blue);}
+.ft-btn.ft-yes.active{background:var(--green);border-color:var(--green);color:white;}
+.ft-btn.ft-no.active{background:var(--g400);border-color:var(--g400);color:white;}
+.btn-refine{
+  width:100%;background:var(--blue);color:white;border:none;border-radius:var(--rs);
+  padding:0.7rem;font-family:'Inter',sans-serif;font-size:0.88rem;font-weight:700;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn-refine:hover{background:var(--blue-2);}
+.btn-refine:disabled{opacity:0.6;cursor:not-allowed;}
+.followup-card.refined-notice{
+  background:rgba(5,150,105,0.06);border-color:rgba(5,150,105,0.25);
+}
+.followup-card.refined-notice .followup-title{color:var(--green);}
+
+/* CONFIDENCE BANNER */
+.tier-banner{
+  margin:0 1.4rem 0;padding:0.7rem 1rem;border-radius:var(--rss);
+  font-size:0.8rem;line-height:1.5;display:flex;align-items:flex-start;gap:0.6rem;
+  margin-top:1rem;
+}
+.tier-banner-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.tier-banner-text{flex:1;}
+.tier-banner-text strong{display:block;font-size:0.78rem;margin-bottom:0.15rem;}
+
+.banner-medium{background:rgba(217,119,6,0.08);border:1px solid rgba(217,119,6,0.2);color:#92400e;}
+.banner-low{background:rgba(234,88,12,0.08);border:1px solid rgba(234,88,12,0.2);color:#9a3412;}
+
+.result-body{padding:1.4rem;}
+.result-desc{font-size:0.9rem;color:var(--g600);line-height:1.75;}
+
+.info-box{
+  margin-top:1rem;background:white;border:1px solid var(--g200);
+  border-radius:var(--rs);padding:1rem;box-shadow:var(--shadow-sm);
+}
+.info-box-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem;}
+.info-box-icon{
+  width:24px;height:24px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.8rem;flex-shrink:0;
+}
+.icon-blue{background:rgba(37,99,235,0.1);}
+.icon-amber{background:rgba(217,119,6,0.1);}
+.info-box-title{font-size:0.72rem;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:0.07em;}
+.info-box-text{font-size:0.8rem;color:var(--g500);line-height:1.6;}
+.matched-chips{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.5rem;}
+.matched-chip{
+  background:var(--g100);border:1px solid var(--g200);
+  border-radius:6px;padding:0.2rem 0.6rem;font-size:0.72rem;color:var(--g600);
+}
+
+/* SYMPTOM MATCH BREAKDOWN (Idea 2 + 4) */
+.match-breakdown{
+  margin-top:0.75rem;background:white;border:1px solid var(--g200);
+  border-radius:var(--rs);padding:1rem;box-shadow:var(--shadow-sm);
+}
+.match-breakdown-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;}
+.match-breakdown-title{font-size:0.72rem;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:0.07em;}
+.match-bar-wrap{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.6rem;}
+.match-bar-bg{flex:1;height:8px;background:var(--g100);border-radius:4px;overflow:hidden;}
+.match-bar-fill{height:100%;border-radius:4px;transition:width 0.5s ease;}
+.bar-high{background:var(--green);}
+.bar-medium{background:var(--amber);}
+.bar-low{background:var(--orange);}
+.match-bar-label{font-size:0.75rem;font-weight:700;color:var(--g600);white-space:nowrap;}
+.match-chips-section{margin-top:0.6rem;}
+.match-chips-label{font-size:0.65rem;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.4rem;}
+.matched-chip.chip-root{background:rgba(37,99,235,0.08);border-color:#c7d2fe;color:var(--blue);font-weight:600;}
+.matched-chip.chip-expansion{background:var(--g100);border-color:var(--g200);color:var(--g500);}
+
+/* SINGLE SYMPTOM WARNING (Idea 5) */
+.single-symptom-notice{
+  background:rgba(217,119,6,0.07);border:1px solid rgba(217,119,6,0.25);
+  border-radius:var(--rss);padding:0.65rem 1rem;margin-top:0.75rem;
+  font-size:0.78rem;color:#92400e;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.5;
+}
+.single-symptom-notice::before{content:'💡';flex-shrink:0;}
+.also-consider{margin-top:1rem;}
+.also-consider-title{
+  font-size:0.68rem;font-weight:700;color:var(--g400);
+  text-transform:uppercase;letter-spacing:0.09em;
+  margin-bottom:0.65rem;display:flex;align-items:center;gap:0.5rem;
+}
+.also-consider-title::before{
+  content:'';display:inline-block;width:16px;height:1px;background:var(--g300);
+}
+.also-consider-title::after{
+  content:'';display:inline-block;flex:1;height:1px;background:var(--g300);
+}
+.alt-card{
+  background:var(--g100);border:1px solid var(--g200);
+  border-radius:var(--rs);padding:0.85rem 1rem;
+  margin-bottom:0.5rem;display:flex;align-items:center;
+  justify-content:space-between;gap:0.75rem;
+  transition:background 0.15s;
+}
+.alt-card:last-child{margin-bottom:0;}
+.alt-card:hover{background:white;}
+.alt-disease{font-size:0.88rem;font-weight:700;color:var(--g800);}
+.alt-desc{font-size:0.75rem;color:var(--g500);margin-top:0.2rem;line-height:1.4;}
+.alt-badge{
+  background:white;border:1px solid var(--g200);
+  border-radius:8px;padding:0.3rem 0.65rem;
+  font-size:0.72rem;font-weight:700;color:var(--g500);
+  flex-shrink:0;white-space:nowrap;
+}
+
+.not-found{
+  background:var(--glass);backdrop-filter:blur(24px);
+  border:1.5px solid var(--glass-border);border-radius:var(--r);
+  padding:3rem 2rem;text-align:center;box-shadow:var(--shadow);
+}
+.not-found-icon{font-size:2.5rem;margin-bottom:0.75rem;}
+.not-found p{color:var(--g500);font-size:0.9rem;line-height:1.6;}
+
+footer{text-align:center;padding:2rem 1.5rem;color:var(--g400);font-size:0.72rem;line-height:1.7;}
+footer strong{color:var(--g600);}
+
+@media(max-width:600px){
+  .hero h1{font-size:2rem;}
+  .search-inner{flex-direction:column;}
+  .btn-search{border-radius:var(--rs);}
+  .nav-tag{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- DEFINITION POPUP -->
+<div class="popup-overlay" id="popupOverlay" onclick="closePopup(event)">
+  <div class="popup-box">
+    <button class="popup-close" onclick="closePopup(null,true)">✕</button>
+    <div class="popup-term" id="popupTerm"></div>
+    <div class="popup-system" id="popupSystem"></div>
+    <div class="popup-def" id="popupDef"></div>
+    <div class="popup-source">Source: <span id="popupSource"></span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <div class="nav-icon">✚</div>
+    <div>
+      <div class="nav-brand">HERMES</div>
+      <div class="nav-sub">Health Expression Retrieval and Mapping through Expansion System</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-dot"></div>
+    <div class="nav-tag">Research Prototype · PUP</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="hero">
+    <div class="hero-eyebrow">🇵🇭 &nbsp;Filipino Health Information System</div>
+    <h1>Find Health Info<br>in <span>Your Language</span></h1>
+    <p>Describe symptoms in Filipino, Taglish, or English. HERMES uses Query Expansion to automatically map informal descriptions into clinical terminology for accurate health information retrieval.</p>
+  </div>
+
+  <div class="search-card">
+    <div class="search-inner">
+      <div class="search-field-wrap">
+        <input type="text" id="queryInput" autocomplete="off"
+          placeholder="e.g. sumasakit ang tiyan, nahihilo ako, chest pain..."
+          onkeypress="if(event.key==='Enter')search()">
+        <div class="autocomplete-dropdown" id="acDropdown"></div>
+      </div>
+      <button class="btn-search" onclick="search()" id="searchBtn">
+        Search &nbsp;→
+      </button>
+    </div>
+    <div class="chips-row">
+      <span class="chips-label">Try:</span>
+      <div class="chip" onclick="setEx('sumasakit ang tiyan')">sumasakit ang tiyan</div>
+      <div class="chip" onclick="setEx('nahihilo ako')">nahihilo ako</div>
+      <div class="chip" onclick="setEx('hirap huminga')">hirap huminga</div>
+      <div class="chip" onclick="setEx('mataas ang lagnat at masakit ang ulo')">lagnat at masakit ang ulo</div>
+      <div class="chip" onclick="setEx('ubo pero walang lagnat')">ubo pero walang lagnat</div>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="loading-pill">
+      <div class="spinner"></div>
+      <span>Processing query...</span>
+    </div>
+  </div>
+
+  <div id="results">
+    <!-- RED FLAG ALERT (shown conditionally by JS) -->
+    <div id="redFlagAlert" style="display:none"></div>
+
+    <div class="process-card">
+      <div class="process-header">
+        <div class="process-title">Query Expansion Process</div>
+        <div class="process-badge">3 Steps</div>
+      </div>
+      <div class="step">
+        <div class="step-left"><div class="step-num n1">1</div></div>
+        <div class="step-body">
+          <div class="step-lbl">Original Input</div>
+          <div class="step-val" id="origVal"></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-left"><div class="step-num n2">2</div></div>
+        <div class="step-body">
+          <div class="step-lbl">Symptom Extraction &amp; Filipino → English Mapping</div>
+          <div id="mappedVal"></div>
+          <div id="negationNotice"></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-left"><div class="step-num n3">3</div></div>
+        <div class="step-body">
+          <div class="step-lbl">Expanded Clinical Terms &nbsp;·&nbsp; WordNet + Medical Synonyms</div>
+          <div class="tags" id="expandedTags"></div>
+          <div class="tag-hint" id="tagHint" style="display:none">Click highlighted terms to see clinical definitions</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="followupCard"></div>
+    <div id="healthResult"></div>
+  </div>
+</main>
+
+<footer>
+  <strong>HERMES</strong> — For research and educational purposes only. Always consult a licensed medical professional for proper diagnosis and treatment.<br>
+  Polytechnic University of the Philippines · Department of Computer Engineering · 2025
+</footer>
+
+<script>
+const ML={exact:'Exact Match',partial:'Partial Match',word_match:'Word Match',fuzzy:'Fuzzy Match',fuzzy_low:'Uncertain Match',no_match:''};
+const MC={exact:'mb-exact',partial:'mb-partial',word_match:'mb-word',fuzzy:'mb-fuzzy',fuzzy_low:'mb-fuzzylow'};
+
+// Resolve label/class for a match_type, including 'decomposed_*' variants
+// produced by the token/bigram fallback (e.g. 'decomposed_exact')
+function resolveMatchBadge(matchType){
+  if(matchType && matchType.startsWith('decomposed_')){
+    const base = matchType.replace('decomposed_','');
+    const baseLbl = ML[base] || base;
+    return {label: 'Extracted: ' + baseLbl, cls: 'mb-decomposed'};
+  }
+  return {label: ML[matchType] || '', cls: MC[matchType] || ''};
+}
+
+// Store definitions globally so tags can reference them
+let TERM_DEFS = {};
+
+function setEx(t){document.getElementById('queryInput').value=t;search();}
+
+// ── AUTOCOMPLETE ─────────────────────────────────────
+let ALL_EXPRESSIONS = [];
+let acActiveIndex = -1;
+
+fetch('/api/expressions')
+  .then(r => r.json())
+  .then(data => { ALL_EXPRESSIONS = data || []; })
+  .catch(e => console.error('Failed to load expressions', e));
+
+function acRender(matches, query){
+  const dd = document.getElementById('acDropdown');
+  if(!matches.length){
+    dd.classList.remove('open');
+    dd.innerHTML = '';
+    acActiveIndex = -1;
+    return;
+  }
+  dd.innerHTML = matches.map((m,i) => {
+    const idx = m.toLowerCase().indexOf(query);
+    let label = m;
+    if(idx >= 0){
+      label = m.slice(0,idx) + '<b>' + m.slice(idx, idx+query.length) + '</b>' + m.slice(idx+query.length);
+    }
+    return `<div class="autocomplete-item" data-val="${m.replace(/"/g,'&quot;')}" onclick="acSelect(this)">${label}</div>`;
+  }).join('');
+  dd.classList.add('open');
+  acActiveIndex = -1;
+}
+
+function acSelect(el){
+  document.getElementById('queryInput').value = el.getAttribute('data-val');
+  document.getElementById('acDropdown').classList.remove('open');
+  document.getElementById('acDropdown').innerHTML='';
+  search();
+}
+
+document.getElementById('queryInput').addEventListener('input', function(){
+  const q = this.value.trim().toLowerCase();
+  if(q.length < 2 || !ALL_EXPRESSIONS.length){
+    document.getElementById('acDropdown').classList.remove('open');
+    return;
+  }
+  // Prioritize expressions that start with the query, then ones that contain it
+  const starts = ALL_EXPRESSIONS.filter(e => e.startsWith(q));
+  const contains = ALL_EXPRESSIONS.filter(e => !e.startsWith(q) && e.includes(q));
+  const matches = [...starts, ...contains].slice(0, 8);
+  acRender(matches, q);
+});
+
+document.getElementById('queryInput').addEventListener('keydown', function(e){
+  const dd = document.getElementById('acDropdown');
+  const items = dd.querySelectorAll('.autocomplete-item');
+  if(!items.length) return;
+  if(e.key === 'ArrowDown'){
+    e.preventDefault();
+    acActiveIndex = Math.min(acActiveIndex+1, items.length-1);
+  } else if(e.key === 'ArrowUp'){
+    e.preventDefault();
+    acActiveIndex = Math.max(acActiveIndex-1, -1);
+  } else if(e.key === 'Enter' && acActiveIndex >= 0){
+    e.preventDefault();
+    acSelect(items[acActiveIndex]);
+    return;
+  } else if(e.key === 'Escape'){
+    dd.classList.remove('open');
+    return;
+  } else {
+    return;
+  }
+  items.forEach((it,i) => it.classList.toggle('active', i===acActiveIndex));
+});
+
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.search-field-wrap')){
+    document.getElementById('acDropdown').classList.remove('open');
+  }
+});
+
+async function search(){
+  const q=document.getElementById('queryInput').value.trim();
+  if(!q)return;
+  document.getElementById('acDropdown').classList.remove('open');
+  document.getElementById('results').style.display='none';
+  document.getElementById('loading').style.display='block';
+  document.getElementById('searchBtn').disabled=true;
+  try{
+    const r=await fetch('/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})});
+    render(await r.json());
+  }catch(e){console.error(e);}
+  finally{
+    document.getElementById('loading').style.display='none';
+    document.getElementById('searchBtn').disabled=false;
+  }
+}
+
+// ── POPUP ────────────────────────────────────────────
+function openPopup(term, def, system, source){
+  document.getElementById('popupTerm').textContent = term;
+  document.getElementById('popupDef').textContent = def;
+  document.getElementById('popupSystem').textContent = '🫀 ' + system;
+  const srcLabel = source === 'WordNet' || source === 'General'
+    ? 'WordNet Lexical Database'
+    : 'HERMES Medical Synonym Map';
+  document.getElementById('popupSource').textContent = srcLabel;
+  document.getElementById('popupOverlay').classList.add('open');
+}
+
+function closePopup(e, force){
+  if(force || (e && e.target === document.getElementById('popupOverlay'))){
+    document.getElementById('popupOverlay').classList.remove('open');
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') document.getElementById('popupOverlay').classList.remove('open');
+});
+
+// ── RENDER ───────────────────────────────────────────
+function render(d){
+  TERM_DEFS = d.term_definitions || {};
+  const TERM_SOURCES = d.term_sources || {};
+
+  // ── Red Flag Alert ───────────────────────────────
+  const rfEl = document.getElementById('redFlagAlert');
+  if(d.red_flags && d.red_flags.length > 0){
+    const chips = d.red_flags.map(f=>`<div class="red-flag-chip">${f}</div>`).join('');
+    rfEl.innerHTML=`
+      <div class="red-flag-alert">
+        <div class="red-flag-icon">🚨</div>
+        <div class="red-flag-body">
+          <div class="red-flag-title">URGENT: Seek Immediate Medical Attention</div>
+          <div class="red-flag-text">
+            Your symptoms may indicate a serious or life-threatening condition.
+            <strong>Please go to the nearest emergency room or call emergency services immediately.</strong>
+            Do not rely on this tool for emergencies.
+          </div>
+          <div class="red-flag-symptoms">${chips}</div>
+        </div>
+      </div>`;
+    rfEl.style.display='block';
+  } else {
+    rfEl.style.display='none';
+    rfEl.innerHTML='';
+  }
+
+  // ── Step 1 ───────────────────────────────────────
+  document.getElementById('origVal').textContent=`"${d.original_input}"`;
+
+  // ── Step 2: Multi-symptom mapping ───────────────
+  const mappedEl = document.getElementById('mappedVal');
+  const symptoms = d.mapped_symptoms || [{input: d.original_input, english: d.english_mapped, match_type: d.match_type}];
+
+  if(symptoms.length > 1){
+    const chips = symptoms.map(s=>{
+      const {label: lbl, cls} = resolveMatchBadge(s.match_type);
+      const badgeHtml = lbl ? `<span class="mc-badge ${cls.replace('mb-','mc-')}">${lbl}</span>` : '';
+      return `<div class="multi-chip">
+        <span>${s.input}</span>
+        <span class="mc-arrow">→</span>
+        <span class="mc-eng">${s.english}</span>
+        ${badgeHtml}
+      </div>`;
+    }).join('');
+    mappedEl.innerHTML = `<div class="multi-row">${chips}</div>`;
+  } else {
+    const {label: lbl, cls} = resolveMatchBadge(d.match_type);
+    mappedEl.innerHTML =
+      `<span class="step-mapped">${d.english_mapped}</span>`+
+      (lbl ? `<span class="mbadge ${cls}">${lbl}</span>` : '');
+  }
+
+  // ── Negation notice ──────────────────────────────
+  const negEl = document.getElementById('negationNotice');
+  if(d.negated_terms && d.negated_terms.length > 0){
+    negEl.innerHTML = `<div class="negation-notice">Excluded negated terms: ${d.negated_terms.join(', ')}</div>`;
+  } else {
+    negEl.innerHTML = '';
+  }
+
+  // ── Step 3: Expanded terms with source labels ────
+  const te=document.getElementById('expandedTags');
+  te.innerHTML='';
+  let hasAnyDef = false;
+
+  const srcClass = {
+    'Dictionary Match': 'src-dict',
+    'Medical Synonym':  'src-med',
+    'WordNet':          'src-wn'
+  };
+  const srcShort = {
+    'Dictionary Match': 'Dict',
+    'Medical Synonym':  'Med',
+    'WordNet':          'WN'
+  };
+
+  d.expanded_terms.forEach(t=>{
+    const el = document.createElement('div');
+    const defEntry = TERM_DEFS[t];
+    const source = TERM_SOURCES[t] || '';
+    const srcCls = srcClass[source] || 'src-wn';
+    const srcLbl = srcShort[source] || '';
+    const srcBadge = srcLbl ? `<span class="tag-source ${srcCls}">${srcLbl}</span>` : '';
+
+    if(defEntry){
+      el.className='tag has-def';
+      el.title='Click for definition';
+      el.onclick=()=>openPopup(t, defEntry[0], defEntry[1], source || 'Medical Synonyms');
+      hasAnyDef=true;
+    } else {
+      el.className='tag';
+    }
+    el.innerHTML = t + srcBadge;
+    te.appendChild(el);
+  });
+
+  const hint = document.getElementById('tagHint');
+  hint.style.display = hasAnyDef ? 'flex' : 'none';
+
+  // ── Clear result area ────────────────────────────
+  document.getElementById('healthResult').innerHTML = '';
+
+  // ── No match at all — show Did You Mean ─────────
+  if(d.found === false){
+    let dymHtml = '';
+    if(d.suggestions && d.suggestions.length > 0){
+      const dymChips = d.suggestions
+        .map(s=>`<div class="dym-chip" onclick="setEx('${s}')">${s}</div>`)
+        .join('');
+      dymHtml = `
+        <div class="dym-box" style="margin-top:1rem;">
+          <div class="dym-title">🤔 Did you mean one of these?</div>
+          <div class="dym-chips">${dymChips}</div>
+        </div>`;
+    }
+    document.getElementById('healthResult').innerHTML=`
+      <div class="not-found">
+        <div class="not-found-icon">🔍</div>
+        <p>${d.message||'No relevant health information found. Please consult a medical professional.'}</p>
+      </div>
+      ${dymHtml}`;
+    document.getElementById('followupCard').innerHTML = '';
+    document.getElementById('results').style.display='block';
+    document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+    return;
+  }
+
+  // ── Show follow-up questions FIRST (no match card yet) ──
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+  renderFollowup(d);
+}
+
+function buildResultCardHtml(d, tier, tierLabels, tierBanner, symChips, alsoHtml){
+  // ── Idea 2: X of Y matched bar ───────────────────────────────────
+  const rootCount = d.matched_root_count || 0;
+  const totalTerms = d.total_query_terms || 1;
+  const matchPct = Math.round((rootCount / Math.max(totalTerms, 1)) * 100);
+  const barClass = matchPct >= 60 ? 'bar-high' : matchPct >= 30 ? 'bar-medium' : 'bar-low';
+  const matchBarHtml = `
+    <div class="match-bar-wrap">
+      <div class="match-bar-bg"><div class="match-bar-fill ${barClass}" style="width:${Math.max(matchPct,8)}%"></div></div>
+      <div class="match-bar-label">${rootCount} of ${totalTerms} terms matched</div>
+    </div>`;
+
+  // ── Idea 4: Root vs expansion chip distinction ───────────────────
+  const rootTerm = (d.root_term || '').toLowerCase();
+  const directSyns = new Set((d.direct_synonyms || []).map(s => s.toLowerCase()));
+  const rawSymptoms = (d.matched_symptoms || '').split(',').map(s => s.trim()).filter(Boolean).slice(0, 10);
+
+  let rootChips = '', expansionChips = '';
+  rawSymptoms.forEach(s => {
+    const sl = s.toLowerCase();
+    const isRoot = sl === rootTerm || directSyns.has(sl) ||
+                   rootTerm.split(' ').some(w => w.length > 3 && sl.includes(w));
+    if(isRoot){
+      rootChips += `<div class="matched-chip chip-root">${s}</div>`;
+    } else {
+      expansionChips += `<div class="matched-chip chip-expansion">${s}</div>`;
+    }
+  });
+
+  const matchedSymptomsHtml = `
+    <div class="match-chips-section">
+      ${rootChips ? `<div class="match-chips-label">Your symptom matched</div><div class="matched-chips">${rootChips}</div>` : ''}
+      ${expansionChips ? `<div class="match-chips-label" style="margin-top:0.5rem">Also in this disease</div><div class="matched-chips">${expansionChips}</div>` : ''}
+    </div>`;
+
+  // ── Idea 5: Single symptom warning ──────────────────────────────
+  const singleSymptomHtml = d.is_single_symptom ? `
+    <div class="single-symptom-notice">
+      Single-symptom searches are less accurate. Try adding more symptoms (e.g. "sakit sa likod at lagnat") for a stronger, more reliable match.
+    </div>` : '';
+
+  return `
+      <div class="result-card tier-${tier}">
+        <div class="result-top">
+          <div>
+            <div class="result-disease-label">${tierLabels[tier]}</div>
+            <div class="result-disease">${d.disease}</div>
+          </div>
+          <div class="score-pill">
+            <div class="score-num">${d.confidence}%</div>
+            <div class="score-label">Match</div>
+          </div>
+        </div>
+        ${tierBanner}
+        <div class="result-body">
+          <p class="result-desc">${d.description}</p>
+          <div class="info-box">
+            <div class="info-box-header">
+              <div class="info-box-icon icon-blue">📊</div>
+              <div class="info-box-title">About the Match Score</div>
+            </div>
+            <div class="info-box-text">
+              The <strong>${d.confidence}%</strong> score shows how closely your expanded search terms overlap with the symptoms recorded for this condition in the database. It is not a medical diagnosis or probability.
+              ${tier==='high' ? 'The overlap is strong, which means this result is a good starting point for your research.' :
+                tier==='medium' ? 'The overlap is moderate. It is a good idea to also look at the other possible conditions listed below.' :
+                'The overlap is low, and several conditions came up as possible matches. Please review all of them and speak with a doctor.'}
+            </div>
+            ${matchBarHtml}
+          </div>
+          <div class="info-box" style="margin-top:0.75rem;">
+            <div class="info-box-header">
+              <div class="info-box-icon icon-blue">🔗</div>
+              <div class="info-box-title">Matched Symptoms in Database</div>
+            </div>
+            ${matchedSymptomsHtml}
+          </div>
+          ${singleSymptomHtml}
+          ${alsoHtml}
+          <div class="info-box" style="margin-top:0.75rem;">
+            <div class="info-box-header">
+              <div class="info-box-icon icon-amber">⚠️</div>
+              <div class="info-box-title">Disclaimer</div>
+            </div>
+            <div class="info-box-text">
+              This information is for educational and research purposes only and does not constitute
+              medical advice or diagnosis. Please consult a licensed healthcare professional for
+              proper evaluation and treatment.
+            </div>
+          </div>
+        </div>
+      </div>`;
+}
+
+// ── FOLLOW-UP (SYMPTOM DELTA) QUESTIONS ─────────────────
+let REFINE_CONTEXT = null;
+let FOLLOWUP_ANSWERS = {};
+
+function renderFollowup(d){
+  const fc = document.getElementById('followupCard');
+  if(!d.followup_questions || d.followup_questions.length === 0){
+    // No follow-up questions — just submit directly with no extra answers
+    // This shouldn't happen often since we always generate questions for valid inputs,
+    // but if it does, auto-submit to get the result.
+    fc.innerHTML = '';
+    REFINE_CONTEXT = d.refine_context || null;
+    FOLLOWUP_ANSWERS = {};
+    if(REFINE_CONTEXT) autoSubmitRefine();
+    return;
+  }
+
+  REFINE_CONTEXT = d.refine_context || null;
+  FOLLOWUP_ANSWERS = {};
+
+  const rows = d.followup_questions.map(q => `
+    <div class="followup-row" data-term="${q.term.replace(/"/g,'&quot;')}">
+      <div class="followup-label">${q.label}</div>
+      <div class="followup-toggle">
+        <button class="ft-btn ft-yes" onclick="setFollowupAnswer(this,'${q.term.replace(/'/g,"\\'")}','yes')">Yes</button>
+        <button class="ft-btn ft-no" onclick="setFollowupAnswer(this,'${q.term.replace(/'/g,"\\'")}','no')">No</button>
+      </div>
+    </div>`).join('');
+
+  fc.innerHTML = `
+    <div class="followup-card">
+      <div class="followup-header">
+        <div class="followup-icon">🩺</div>
+        <div>
+          <div class="followup-title">A few more questions to help narrow this down</div>
+          <div class="followup-sub">Answer these first — your result will appear after.</div>
+        </div>
+      </div>
+      <div class="followup-rows">${rows}</div>
+      <button class="btn-refine" id="refineBtn" onclick="submitRefine()">Show Results →</button>
+    </div>`;
+}
+
+function setFollowupAnswer(btn, term, answer){
+  FOLLOWUP_ANSWERS[term] = answer;
+  const row = btn.closest('.followup-row');
+  row.querySelectorAll('.ft-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+async function autoSubmitRefine(){
+  // Called when there are no follow-up questions — submit immediately with empty answers
+  if(!REFINE_CONTEXT) return;
+  try{
+    const r = await fetch('/refine', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({refine_context: REFINE_CONTEXT, answers: {}})
+    });
+    const d = await r.json();
+    renderRefined(d);
+  }catch(e){ console.error(e); }
+}
+
+async function submitRefine(){
+  if(!REFINE_CONTEXT) return;
+  const btn = document.getElementById('refineBtn');
+  btn.disabled = true;
+  btn.textContent = 'Analyzing...';
+  try{
+    const r = await fetch('/refine', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({refine_context: REFINE_CONTEXT, answers: FOLLOWUP_ANSWERS})
+    });
+    const d = await r.json();
+    renderRefined(d);
+  }catch(e){
+    console.error(e);
+    btn.disabled = false;
+    btn.textContent = 'Show Results →';
+  }
+}
+
+function renderRefined(d){
+  const hr = document.getElementById('healthResult');
+  const fc = document.getElementById('followupCard');
+
+  if(!d.found){
+    hr.innerHTML = `
+      <div class="not-found">
+        <div class="not-found-icon">🔍</div>
+        <p>${d.message||'No relevant health information found. Please consult a medical professional.'}</p>
+      </div>`;
+    fc.innerHTML = '';
+    hr.scrollIntoView({behavior:'smooth',block:'start'});
+    return;
+  }
+
+  const tier = d.confidence_tier || 'high';
+  const symChips = d.matched_symptoms.split(',')
+    .map(s=>s.trim()).filter(Boolean).slice(0,10)
+    .map(s=>`<div class="matched-chip">${s}</div>`).join('');
+
+  const tierLabels = {
+    high:   'Strong Match Found',
+    medium: 'Possible Match Found',
+    low:    'Weak Match — Multiple Possibilities'
+  };
+
+  const tierBanner = tier === 'medium' ? `
+    <div class="tier-banner banner-medium">
+      <div class="tier-banner-icon">⚠️</div>
+      <div class="tier-banner-text">
+        <strong>Moderate confidence</strong>
+        This symptom can be linked to more than one condition. The result below is the closest match,
+        but please also check the other possible conditions shown at the bottom of this card.
+      </div>
+    </div>` : tier === 'low' ? `
+    <div class="tier-banner banner-low">
+      <div class="tier-banner-icon">🔶</div>
+      <div class="tier-banner-text">
+        <strong>Low confidence — several conditions match this symptom</strong>
+        The symptom you entered overlaps with multiple conditions in the database. All three results
+        below are worth considering. Please consult a medical professional for a proper evaluation.
+      </div>
+    </div>` : '';
+
+  let alsoHtml = '';
+  if(d.other_matches && d.other_matches.length > 0){
+    const altCards = d.other_matches.map(m=>{
+      const shortDesc = m.description.length > 90 ? m.description.slice(0,87)+'...' : m.description;
+      return `
+        <div class="alt-card">
+          <div>
+            <div class="alt-disease">${m.disease}</div>
+            <div class="alt-desc">${shortDesc}</div>
+          </div>
+          <div class="alt-badge">${m.confidence}% match</div>
+        </div>`;
+    }).join('');
+    alsoHtml = `
+      <div class="also-consider">
+        <div class="also-consider-title">Other Possible Conditions</div>
+        ${altCards}
+      </div>`;
+  }
+
+  // Insert result card ABOVE the follow-up card (already in DOM)
+  hr.innerHTML = buildResultCardHtml(d, tier, tierLabels, tierBanner, null, alsoHtml);
+
+  // Replace follow-up card with a confirmation notice
+  fc.innerHTML = `
+    <div class="followup-card refined-notice">
+      <div class="followup-header">
+        <div class="followup-icon">✅</div>
+        <div>
+          <div class="followup-title">Results refined based on your answers</div>
+          <div class="followup-sub">The match above reflects the additional symptoms you confirmed.</div>
+        </div>
+      </div>
+    </div>`;
+
+  hr.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>
